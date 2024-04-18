@@ -14,10 +14,13 @@ const verifyUser = (req, res, next) => {
     } else {
         jwt.verify(token, process.env.MY_SECRET, (err, decode) => {
             if (err) {
-                return res.send('not-token')
-            } else {
                 req.body.email = decode.email
                 next()
+                /* return res.send('not-token')*/
+            } else {
+                return res.send('not-token')
+                //req.body.email = decode.email
+                // next()
             }
         })
     }
