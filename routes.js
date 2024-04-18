@@ -7,6 +7,7 @@ const model = require('./model/userSchema')
 const router = express.Router();
 
 //a middleware function to verify user's authorization with tokens before logging them into the tasks page
+/*
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token
     if (!token) {
@@ -16,7 +17,7 @@ const verifyUser = (req, res, next) => {
             if (err) {
                 req.body.email = decode.email
                 next()
-                /* return res.send('not-token')*/
+                 return res.send('not-token')
             } else {
                 return res.send('not-token')
                 //req.body.email = decode.email
@@ -24,7 +25,8 @@ const verifyUser = (req, res, next) => {
             }
         })
     }
-}
+} 
+*/
 
 //routes to create a new user
 router.post('/signup', async (req, res) => {
