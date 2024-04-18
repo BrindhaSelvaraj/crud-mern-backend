@@ -1,28 +1,45 @@
-require('dotenv').config()
+// Load environment variables from .env file
+require('dotenv').config();
 
-const mongoose = require('mongoose')
-const express = require('express')
-const cors = require('cors')
-const cookieParser = require('cookie-parser')
-const router = require('./routes')
+// Import required libraries
+const mongoose = require('mongoose');
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const router = require('./routes'); // Import router from separate file
 
-//using cors for the cross origin
-//using cookieparser to store tokens in user's cookie section
+// Create an Express application instance
+const app = express();
 
-const app = express()
-
+// Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO)
-.then(() => {
-    console.log('Database Connected')
-    app.use(express.json())
-    app.use(cors({
-        origin: 'http://localhost:3000',
-        methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-        credentials: true
-    }));
-    app.use(cookieParser())
-    app.use('/api', router)
-    app.listen(5000, () => console.log('server is running on port 5000'))
+    .then(() => {
+        console.log('Database Connected');
 
-})
-.catch((err) => console.error(err) )
+        // Define route for the root endpoint ("/")
+        app.get("/", (req, res) => {
+            res.status(200).send(`<h1>Welcome to task management app</h1>`);
+        });
+
+        // Set up middleware
+        app.use(express.json()); // Parse JSON bodies
+        app.use(cors({
+            origin: 'http://localhost:3000', // Allow requests from this origin
+            methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+            credentials: true // Allow cookies to be sent cross-origin
+        }));
+        app.use(cookieParser()); // Parse cookies
+
+        // Mount the router for API endpoints under "/api"
+        app.use('/api', router);
+
+        // Start the Express server
+        const PORT = process.env.PORT || 5000; // Use specified port or default to 5000
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    })
+    .catch((err) => {
+        console.error('Error connecting to MongoDB:', err);
+    });
