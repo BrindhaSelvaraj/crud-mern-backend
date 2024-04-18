@@ -7,6 +7,7 @@ const model = require('./model/userSchema')
 const router = express.Router();
 
 //a middleware function to verify user's authorization with tokens before logging them into the tasks page
+
 /*
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token
@@ -63,7 +64,7 @@ router.post('/login', async (req, res) => {
 })
 
 //route to get user and user's projects after authorization is confirmed 
-router.get('/tasks', verifyUser, async (req, res) => {
+router.get('/tasks',  async (req, res) => {
     try {
         const userDetails = await model.findOne({ email: req.body.email })
         res.send(userDetails)
@@ -74,7 +75,7 @@ router.get('/tasks', verifyUser, async (req, res) => {
 })
 
 //route to create and add new project/tasks to the user's list
-router.patch('/tasks', verifyUser, async (req, res) => {
+router.patch('/tasks',  async (req, res) => {
 
     try {
         const email = req.body.email
@@ -94,7 +95,7 @@ router.patch('/tasks', verifyUser, async (req, res) => {
 })
 
 //route to edit user's tasks based on title, description and deadline
-router.patch('/tasks/edit', verifyUser, async (req, res) => {
+router.patch('/tasks/edit',  async (req, res) => {
     try {
         const email = req.body.email
         const update = req.body
@@ -118,7 +119,7 @@ router.patch('/tasks/edit', verifyUser, async (req, res) => {
 })
 
 //route to update user's status to true of false
-router.patch('/tasks/status', verifyUser, async (req, res) => {
+router.patch('/tasks/status',  async (req, res) => {
 
     try {
         const email = req.body.email
@@ -138,7 +139,7 @@ router.patch('/tasks/status', verifyUser, async (req, res) => {
 })
 
 //route to delete selected project/tasks from the user's list
-router.patch('/tasks/delete', verifyUser, async (req, res) => {
+router.patch('/tasks/delete',  async (req, res) => {
 
     try {
         const email = req.body.email
