@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
 //route to get user and user's projects after authorization is confirmed 
 router.get('/tasks',  async (req, res) => {
     try {
-        const userDetails = await model.findOne({ email: req.body.email })
+        const userDetails = await model.findOne({ email: req.query.email })
         res.send(userDetails)
     } catch (error) {
         res.status(400)
@@ -149,7 +149,11 @@ router.patch('/tasks/delete',  async (req, res) => {
         const result = await model.findOneAndUpdate(
             { email }, { '$pull': { tasks: { title, description, deadline, isDone, _id } } }, option
         )
-        res.send(result)
+        const response={
+            result:result ,
+            isDelete:true
+        }
+        res.send(response)
     }
 
     catch (error) {
