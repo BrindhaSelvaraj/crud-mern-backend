@@ -13,7 +13,7 @@ const app = express();
 
 // Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO)
-a    .then(() => {
+    .then(() => {
         console.log('Database Connected');
 
         // Define route for the root endpoint ("/")
