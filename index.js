@@ -13,7 +13,7 @@ const app = express();
 
 // Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO)
-    .then(() => {
+a    .then(() => {
         console.log('Database Connected');
 
         // Define route for the root endpoint ("/")
@@ -23,12 +23,26 @@ mongoose.connect(process.env.MONGO)
 
         // Set up middleware
         app.use(express.json()); // Parse JSON bodies
-        app.use(cors({
-            origin: 'http://localhost:3000', // Allow requests from this origin
+       /* app.use(cors({
+            //origin: 'http://localhost:3000',
+            origin: 'https://comfy-mousse-86384e.netlify.app/', // Allow requests from this origin
             methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
             credentials: true // Allow cookies to be sent cross-origin
         }));
-        app.use(cookieParser()); // Parse cookies
+        app.use(cookieParser()); // Parse cookies */
+        const allowedOrigins = ['http://localhost:3000', 'https://comfy-mousse-86384e.netlify.app'];
+
+    app.use(cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true); // Allow the request
+            } else {
+                callback(new Error('Not allowed by CORS')); // Block the request
+            }
+        },
+        methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+        credentials: true // Allow cookies to be sent cross-origin
+    }));
 
         // Mount the router for API endpoints under "/api"
         app.use('/api', router);
